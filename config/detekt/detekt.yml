@@ -1,0 +1,23 @@
+# Default:
+# https://github.com/detekt/detekt/blob/main/detekt-core/src/main/resources/default-detekt-config.yml
+
+config:
+  warningsAsErrors: true
+
+naming:
+  FunctionNaming:
+    excludes: [ '**/src/test/**', '**/src/functionalTest/**' ]
+
+performance:
+  SpreadOperator:
+    active: false
+
+style:
+  ForbiddenComment:
+    active: false
+  MagicNumber:
+    active: false
+  MaxLineLength:
+    active: false # use ktlint
+  ReturnCount:
+    max: 4
