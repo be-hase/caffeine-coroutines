@@ -1,4 +1,4 @@
-name: Publish Plugin Portal
+name: Publish Maven Central
 on:
   workflow_dispatch:
 
