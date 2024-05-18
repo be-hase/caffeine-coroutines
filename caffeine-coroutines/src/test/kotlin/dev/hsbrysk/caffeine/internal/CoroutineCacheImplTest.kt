@@ -7,6 +7,7 @@ import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
 import assertk.assertions.isNull
+import assertk.assertions.isNullOrEmpty
 import com.github.benmanes.caffeine.cache.AsyncCache
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
@@ -179,7 +180,7 @@ class CoroutineCacheImplTest {
             val result2 = GlobalScope.async {
                 target.get("2") {
                     assertThat(coroutineContext[CoroutineName]).isNull()
-                    assertThat(MDC.getCopyOfContextMap()).containsAtLeast("hoge" to "hoge")
+                    assertThat(MDC.getCopyOfContextMap()).isNullOrEmpty()
                     "value-$it"
                 }
             }
