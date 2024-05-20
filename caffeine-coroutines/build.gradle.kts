@@ -5,7 +5,7 @@ plugins {
     id("conventions.maven-publish")
 }
 
-description = "A simple extension that adds coroutine support to caffeine"
+description = "A simple extension that adds Kotlin Coroutines support to caffeine"
 
 dependencies {
     api(libs.caffeine)
