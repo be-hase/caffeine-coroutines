@@ -22,7 +22,7 @@ mavenPublishing {
     )
     pom {
         name = project.name
-        description = "Extension of caffeine with Kotlin Coroutines support"
+        description = project.description
         url = "https://github.com/be-hase/caffeine-coroutines"
         licenses {
             license {

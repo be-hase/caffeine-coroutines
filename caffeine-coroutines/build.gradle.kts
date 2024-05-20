@@ -5,6 +5,8 @@ plugins {
     id("conventions.maven-publish")
 }
 
+description = "A simple extension that adds coroutine support to caffeine"
+
 dependencies {
     api(libs.caffeine)
     api(libs.kotlin.coroutines.core)
