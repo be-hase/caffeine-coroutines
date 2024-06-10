@@ -1,5 +1,7 @@
 # caffeine-coroutines
 
+![Maven Central Version](https://img.shields.io/maven-central/v/dev.hsbrysk/caffeine-coroutines)
+
 ## Motivation
 
 There is a caching library called [Caffeine](https://github.com/ben-manes/caffeine),
