@@ -20,27 +20,29 @@ mavenPublishing {
     configure(
         KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaHtml"), sourcesJar = true),
     )
-    pom {
-        name = project.name
-        description = project.description
-        url = "https://github.com/be-hase/caffeine-coroutines"
-        licenses {
-            license {
-                name = "MIT License"
-                url = "https://opensource.org/license/mit"
+    afterEvaluate {
+        pom {
+            name = project.name
+            description = project.description
+            url = "https://github.com/be-hase/caffeine-coroutines"
+            licenses {
+                license {
+                    name = "MIT License"
+                    url = "https://opensource.org/license/mit"
+                }
             }
-        }
-        developers {
-            developer {
-                id = "be-hase"
-                name = "Ryosuke Hasebe"
-                email = "hsb.1014@gmail.com"
+            developers {
+                developer {
+                    id = "be-hase"
+                    name = "Ryosuke Hasebe"
+                    email = "hsb.1014@gmail.com"
+                }
             }
-        }
-        scm {
-            connection.set("scm:git:git://github.com/be-hase/caffeine-coroutines.git")
-            developerConnection.set("scm:git:ssh://github.com:be-hase/caffeine-coroutines.git")
-            url.set("https://github.com/be-hase/caffeine-coroutines")
+            scm {
+                connection.set("scm:git:git://github.com/be-hase/caffeine-coroutines.git")
+                developerConnection.set("scm:git:ssh://github.com:be-hase/caffeine-coroutines.git")
+                url.set("https://github.com/be-hase/caffeine-coroutines")
+            }
         }
     }
 }
