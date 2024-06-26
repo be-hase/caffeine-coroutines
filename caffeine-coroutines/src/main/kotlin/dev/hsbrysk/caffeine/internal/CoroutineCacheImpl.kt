@@ -10,9 +10,7 @@ import kotlinx.coroutines.future.future
 import java.util.concurrent.CompletableFuture
 
 internal class CoroutineCacheImpl<K : Any, V : Any>(private val cache: AsyncCache<K, V>) : CoroutineCache<K, V> {
-    override suspend fun getIfPresent(key: K): V? {
-        return cache.getIfPresent(key)?.await()
-    }
+    override suspend fun getIfPresent(key: K): V? = cache.getIfPresent(key)?.await()
 
     override suspend fun get(
         key: K,
@@ -41,11 +39,7 @@ internal class CoroutineCacheImpl<K : Any, V : Any>(private val cache: AsyncCach
         map.entries.forEach { cache.put(it.key, CompletableFuture.completedFuture(it.value)) }
     }
 
-    override fun synchronous(): Cache<K, V> {
-        return cache.synchronous()
-    }
+    override fun synchronous(): Cache<K, V> = cache.synchronous()
 
-    override fun asynchronous(): AsyncCache<K, V> {
-        return cache
-    }
+    override fun asynchronous(): AsyncCache<K, V> = cache
 }
