@@ -1,7 +1,7 @@
 [versions]
 kotlin-core = "2.0.0"
 kotlin-coroutines = "1.8.1"
-ktlint = "1.3.0"
+ktlint = "1.3.1"
 
 [libraries]
 assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version = "0.28.1" }
