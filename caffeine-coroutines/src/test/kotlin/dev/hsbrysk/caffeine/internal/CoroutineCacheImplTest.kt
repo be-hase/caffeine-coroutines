@@ -242,5 +242,37 @@ class CoroutineCacheImplTest {
                 assertThat(result1.await()).isEqualTo("value-1")
             }
         }
+
+        @Test
+        fun `get - check exception and cancel behavior`() {
+            val scope = CoroutineScope(EmptyCoroutineContext)
+            val job = scope.async {
+                try {
+                    target.get("1", exceptionFunction)
+                } catch (expected: IllegalArgumentException) {
+                    println(expected)
+                }
+                "Result"
+            }
+            val result = runBlocking { job.await() }
+            assertThat(result).isEqualTo("Result")
+        }
+
+        @Test
+        fun `getAll - check exception and cancel behavior`() {
+            val scope = CoroutineScope(EmptyCoroutineContext)
+            val job = scope.async {
+                try {
+                    target.getAll(listOf("1", "2")) {
+                        throw IllegalArgumentException()
+                    }
+                } catch (expected: IllegalArgumentException) {
+                    println(expected)
+                }
+                "Result"
+            }
+            val result = runBlocking { job.await() }
+            assertThat(result).isEqualTo("Result")
+        }
     }
 }
