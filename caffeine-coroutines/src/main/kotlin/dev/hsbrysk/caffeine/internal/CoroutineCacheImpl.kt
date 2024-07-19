@@ -3,8 +3,7 @@ package dev.hsbrysk.caffeine.internal
 import com.github.benmanes.caffeine.cache.AsyncCache
 import com.github.benmanes.caffeine.cache.Cache
 import dev.hsbrysk.caffeine.CoroutineCache
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.future.await
 import kotlinx.coroutines.future.future
 import java.util.concurrent.CompletableFuture
@@ -15,17 +14,15 @@ internal class CoroutineCacheImpl<K : Any, V : Any>(private val cache: AsyncCach
     override suspend fun get(
         key: K,
         mappingFunction: suspend (K) -> V?,
-    ): V? {
-        val ctx = currentCoroutineContext()
-        return cache.get(key) { k, _ -> CoroutineScope(ctx).future { mappingFunction(k) } }.await()
+    ): V? = coroutineScope {
+        cache.get(key) { k, _ -> future { mappingFunction(k) } }.await()
     }
 
     override suspend fun getAll(
         keys: Iterable<K>,
         mappingFunction: suspend (Iterable<K>) -> Map<K, V>,
-    ): Map<K, V> {
-        val ctx = currentCoroutineContext()
-        return cache.getAll(keys) { k, _ -> CoroutineScope(ctx).future { mappingFunction(k) } }.await()
+    ): Map<K, V> = coroutineScope {
+        cache.getAll(keys) { k, _ -> future { mappingFunction(k) } }.await()
     }
 
     override fun put(
