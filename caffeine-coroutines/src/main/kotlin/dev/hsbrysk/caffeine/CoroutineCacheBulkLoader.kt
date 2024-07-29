@@ -6,5 +6,5 @@ interface CoroutineCacheBulkLoader<K : Any, V : Any> : CoroutineCacheLoader<K, V
     /**
      * The coroutines implementation of [CacheLoader.loadAll]
      */
-    suspend fun loadAll(keys: Set<K>): Map<K, V> = throw UnsupportedOperationException()
+    suspend fun loadAll(keys: Set<K>): Map<K, V>
 }
