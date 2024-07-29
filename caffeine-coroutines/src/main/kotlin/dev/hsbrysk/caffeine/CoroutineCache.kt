@@ -39,12 +39,12 @@ interface CoroutineCache<K : Any, V : Any> {
     fun putAll(map: Map<K, V>)
 
     /**
-     * See [AsyncCache.synchronous]
+     * Returns the [Cache]
      */
     fun synchronous(): Cache<K, V>
 
     /**
-     * Returns the AsyncCache used inside CoroutinesCache
+     * Returns the [AsyncCache]
      */
     fun asynchronous(): AsyncCache<K, V>
 }

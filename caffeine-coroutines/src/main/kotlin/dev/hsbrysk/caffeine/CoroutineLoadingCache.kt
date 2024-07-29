@@ -1,5 +1,6 @@
 package dev.hsbrysk.caffeine
 
+import com.github.benmanes.caffeine.cache.AsyncLoadingCache
 import com.github.benmanes.caffeine.cache.LoadingCache
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -17,7 +18,13 @@ interface CoroutineLoadingCache<K : Any, V : Any> : CoroutineCache<K, V> {
      */
     suspend fun getAll(keys: Iterable<K>): Map<K, V>
 
-    // memo:
-    // I want to implement LoadingCache<K, V> synchronous() like the original AsyncLoadingCache,
-    // but the implementation is challenging and not aligning well, so I'm giving up.
+    /**
+     * Returns the [LoadingCache]
+     */
+    override fun synchronous(): LoadingCache<K, V>
+
+    /**
+     * Returns the [AsyncLoadingCache]
+     */
+    override fun asynchronous(): AsyncLoadingCache<K, V>
 }
