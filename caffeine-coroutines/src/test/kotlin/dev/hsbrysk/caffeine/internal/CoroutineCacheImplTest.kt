@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
 import java.util.Collections
+import java.util.function.Function
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -74,11 +75,14 @@ class CoroutineCacheImplTest {
                 "1" to "value-1",
                 "2" to "value-2",
             )
-            assertThat(target.getAll(listOf("1", "2"), mappingFunction)).containsAtLeast(
+            assertThat(target.getAll(listOf("1", "3"), mappingFunction)).containsAtLeast(
                 "1" to "value-1",
-                "2" to "value-2",
+                "3" to "value-3",
             )
-            assertThat(invokedKeys).containsExactly("1", "2")
+            assertThat(target.getIfPresent("1")).isEqualTo("value-1")
+            assertThat(target.getIfPresent("2")).isEqualTo("value-2")
+            assertThat(target.getIfPresent("3")).isEqualTo("value-3")
+            assertThat(invokedKeys).containsExactly("1", "2", "3")
         }
 
         @Test
@@ -135,11 +139,19 @@ class CoroutineCacheImplTest {
         @Test
         fun synchronous() {
             assertThat(target.synchronous()).isInstanceOf(Cache::class.java)
+            assertThat(target.synchronous().get("1") { "value-$it" }).isEqualTo("value-1")
+            runTest {
+                assertThat(target.getIfPresent("1")).isEqualTo("value-1")
+            }
         }
 
         @Test
         fun asynchronous() {
             assertThat(target.asynchronous()).isInstanceOf(AsyncCache::class.java)
+            assertThat(target.asynchronous().get("1", Function { "value-$it" }).get()).isEqualTo("value-1")
+            runTest {
+                assertThat(target.getIfPresent("1")).isEqualTo("value-1")
+            }
         }
     }
 
