@@ -23,7 +23,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
@@ -49,7 +48,7 @@ class CoroutineCacheImplTest {
     @Nested
     inner class Simple {
         @Test
-        fun getIfPresent() = runTest {
+        fun getIfPresent() = runBlocking {
             assertThat(target.getIfPresent("1")).isNull()
             target.get("1", mappingFunction)
             assertThat(target.getIfPresent("1")).isEqualTo("value-1")
@@ -57,14 +56,14 @@ class CoroutineCacheImplTest {
         }
 
         @Test
-        fun get() = runTest {
+        fun get() = runBlocking {
             assertThat(target.get("1", mappingFunction)).isEqualTo("value-1")
             assertThat(target.get("1", mappingFunction)).isEqualTo("value-1")
             assertThat(invokedKeys).containsExactly("1")
         }
 
         @Test
-        fun getAll() = runTest {
+        fun getAll() = runBlocking {
             val mappingFunction: suspend (Iterable<String>) -> Map<String, String> = { keys ->
                 delay(1000)
                 invokedKeys.addAll(keys)
@@ -86,14 +85,14 @@ class CoroutineCacheImplTest {
         }
 
         @Test
-        fun put() = runTest {
+        fun put() = runBlocking {
             assertThat(target.getIfPresent("1")).isNull()
             target.put("1", "value-1")
             assertThat(target.getIfPresent("1")).isEqualTo("value-1")
         }
 
         @Test
-        fun putAll() = runTest {
+        fun putAll() = runBlocking {
             assertThat(target.getIfPresent("1")).isNull()
             assertThat(target.getIfPresent("2")).isNull()
             target.putAll(mapOf("1" to "value-1", "2" to "value-2"))
@@ -104,14 +103,14 @@ class CoroutineCacheImplTest {
         @Test
         fun exception() {
             // If an error occurs, it will not be cached.
-            assertFailure { runTest { target.get("1", exceptionFunction) } }
-            runTest {
+            assertFailure { runBlocking { target.get("1", exceptionFunction) } }
+            runBlocking {
                 assertThat(target.getIfPresent("1")).isNull()
             }
         }
 
         @Test
-        fun `null behavior`() = runTest {
+        fun `null behavior`() = runBlocking {
             // Caffeine cannot cache null values.
 
             // Since this is Kotlin, I've made it so that it won't compile.
@@ -140,7 +139,7 @@ class CoroutineCacheImplTest {
         fun synchronous() {
             assertThat(target.synchronous()).isInstanceOf(Cache::class.java)
             assertThat(target.synchronous().get("1") { "value-$it" }).isEqualTo("value-1")
-            runTest {
+            runBlocking {
                 assertThat(target.getIfPresent("1")).isEqualTo("value-1")
             }
         }
@@ -149,14 +148,12 @@ class CoroutineCacheImplTest {
         fun asynchronous() {
             assertThat(target.asynchronous()).isInstanceOf(AsyncCache::class.java)
             assertThat(target.asynchronous().get("1", Function { "value-$it" }).get()).isEqualTo("value-1")
-            runTest {
+            runBlocking {
                 assertThat(target.getIfPresent("1")).isEqualTo("value-1")
             }
         }
     }
 
-    // Testing the behavior of Coroutines just to be sure.
-    // In this test, I want to use the actual scheduler as much as possible, so I will not use runTest.
     @DelicateCoroutinesApi
     @Nested
     inner class Complex {

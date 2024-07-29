@@ -26,7 +26,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.slf4j.MDCContext
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.slf4j.MDC
@@ -54,7 +53,7 @@ class CoroutineLoadingCacheImplTest {
     @Nested
     inner class Simple {
         @Test
-        fun get() = runTest {
+        fun get() = runBlocking {
             assertThat(target.get("1")).isEqualTo("value-1")
             assertThat(target.get("1")).isEqualTo("value-1")
             assertThat(target.get("2")).isEqualTo("value-2")
@@ -62,7 +61,7 @@ class CoroutineLoadingCacheImplTest {
         }
 
         @Test
-        fun getAll() = runTest {
+        fun getAll() = runBlocking {
             assertThat(target.getAll(listOf("1", "2"))).containsAtLeast("1" to "value-1", "2" to "value-2")
             assertThat(target.getAll(listOf("1", "3"))).containsAtLeast("1" to "value-1", "3" to "value-3")
             assertThat(target.getIfPresent("1")).isEqualTo("value-1")
@@ -75,7 +74,7 @@ class CoroutineLoadingCacheImplTest {
         fun synchronous() {
             assertThat(target.synchronous()).isInstanceOf(LoadingCache::class.java)
             assertThat(target.synchronous().get("1")).isEqualTo("value-1")
-            runTest {
+            runBlocking {
                 assertThat(target.getIfPresent("1")).isEqualTo("value-1")
             }
         }
@@ -84,14 +83,12 @@ class CoroutineLoadingCacheImplTest {
         fun asynchronous() {
             assertThat(target.asynchronous()).isInstanceOf(AsyncLoadingCache::class.java)
             assertThat(target.asynchronous().get("1").get()).isEqualTo("value-1")
-            runTest {
+            runBlocking {
                 assertThat(target.getIfPresent("1")).isEqualTo("value-1")
             }
         }
     }
 
-    // Testing the behavior of Coroutines just to be sure.
-    // In this test, I want to use the actual scheduler as much as possible, so I will not use runTest.
     @Suppress("OPT_IN_USAGE")
     @Nested
     inner class Complex {
