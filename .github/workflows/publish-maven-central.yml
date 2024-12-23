@@ -1,6 +1,8 @@
 name: Publish Maven Central
 on:
-  workflow_dispatch:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   publish:
@@ -18,8 +20,11 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
       - name: Publish
         env:
+          TAG_NAME: ${{ github.ref_name }}
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
           ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_PGP_KEY }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PGP_PASSWORD }}
-        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+        run: |
+          PUBLISH_VERSION=${TAG_NAME#v}
+          ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache -PpublishVersion="$PUBLISH_VERSION"
