@@ -8,13 +8,13 @@ import dev.hsbrysk.caffeine.internal.toAsyncCacheLoader
 /**
  * Build [CoroutineCache]
  */
-fun <K : Any, V : Any> Caffeine<in K, in V>.buildCoroutine(): CoroutineCache<K, V> =
+fun <K : Any, V> Caffeine<in K, in V & Any>.buildCoroutine(): CoroutineCache<K, V> =
     CoroutineCacheImpl(this.buildAsync())
 
 /**
  * Build [CoroutineLoadingCache]
  */
-fun <K : Any, V : Any> Caffeine<in K, in V>.buildCoroutine(
+fun <K : Any, V> Caffeine<in K, in V & Any>.buildCoroutine(
     loader: CoroutineCacheLoader<K, V>,
 ): CoroutineLoadingCache<K, V> = CoroutineLoadingCacheImpl(
     CoroutineCacheImpl(this.buildAsync(loader.toAsyncCacheLoader())),
