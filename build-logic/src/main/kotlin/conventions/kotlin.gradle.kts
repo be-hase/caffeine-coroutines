@@ -4,6 +4,7 @@ import org.gradle.accessors.dm.LibrariesForLibs
 
 plugins {
     kotlin("jvm")
+    `project-report`
 }
 
 java {
