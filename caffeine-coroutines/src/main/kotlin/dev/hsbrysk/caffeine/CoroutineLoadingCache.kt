@@ -21,10 +21,10 @@ interface CoroutineLoadingCache<K : Any, V : Any> : CoroutineCache<K, V> {
     /**
      * Returns the [LoadingCache]
      */
-    override fun synchronous(): LoadingCache<K, V>
+    override fun synchronous(): LoadingCache<K, V?>
 
     /**
      * Returns the [AsyncLoadingCache]
      */
-    override fun asynchronous(): AsyncLoadingCache<K, V>
+    override fun asynchronous(): AsyncLoadingCache<K, V?>
 }

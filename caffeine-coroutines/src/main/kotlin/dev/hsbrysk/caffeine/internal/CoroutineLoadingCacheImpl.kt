@@ -31,7 +31,7 @@ internal class CoroutineLoadingCacheImpl<K : Any, V : Any>(
         cache.getAll(keys) { bulkLoader.loadAll(keys.toSet()) }
     }
 
-    override fun synchronous(): LoadingCache<K, V> = asynchronous().synchronous()
+    override fun synchronous(): LoadingCache<K, V?> = asynchronous().synchronous()
 
-    override fun asynchronous(): AsyncLoadingCache<K, V> = cache.asynchronous() as AsyncLoadingCache<K, V>
+    override fun asynchronous(): AsyncLoadingCache<K, V?> = cache.asynchronous() as AsyncLoadingCache<K, V?>
 }

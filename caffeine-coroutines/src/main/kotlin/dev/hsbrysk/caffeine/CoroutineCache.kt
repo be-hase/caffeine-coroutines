@@ -41,10 +41,10 @@ interface CoroutineCache<K : Any, V : Any> {
     /**
      * Returns the [Cache]
      */
-    fun synchronous(): Cache<K, V>
+    fun synchronous(): Cache<K, V?>
 
     /**
      * Returns the [AsyncCache]
      */
-    fun asynchronous(): AsyncCache<K, V>
+    fun asynchronous(): AsyncCache<K, V?>
 }
