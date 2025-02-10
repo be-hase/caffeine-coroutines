@@ -23,13 +23,13 @@ private open class CoroutineAsyncCacheLoader<K : Any, V : Any>(private val loade
     override fun asyncLoad(
         key: K,
         executor: Executor,
-    ): CompletableFuture<V?> = GlobalScope.future(executor.asCoroutineDispatcher()) { loader.load(key) }
+    ): CompletableFuture<out V?> = GlobalScope.future(executor.asCoroutineDispatcher()) { loader.load(key) }
 
     override fun asyncReload(
         key: K,
         oldValue: V,
         executor: Executor,
-    ): CompletableFuture<V?> = GlobalScope.future(executor.asCoroutineDispatcher()) {
+    ): CompletableFuture<out V?> = GlobalScope.future(executor.asCoroutineDispatcher()) {
         loader.reload(key, oldValue)
     }
 }
