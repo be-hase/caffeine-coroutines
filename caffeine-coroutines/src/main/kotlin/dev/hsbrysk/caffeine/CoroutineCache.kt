@@ -3,7 +3,7 @@ package dev.hsbrysk.caffeine
 import com.github.benmanes.caffeine.cache.AsyncCache
 import com.github.benmanes.caffeine.cache.Cache
 
-interface CoroutineCache<K : Any, V : Any> {
+interface CoroutineCache<K : Any, V> {
     /**
      * The coroutines implementation of [Cache.getIfPresent]
      */
@@ -14,29 +14,29 @@ interface CoroutineCache<K : Any, V : Any> {
      */
     suspend fun get(
         key: K,
-        mappingFunction: suspend (K) -> V?,
-    ): V?
+        mappingFunction: suspend (K) -> V,
+    ): V
 
     /**
      * The coroutines implementation of [Cache.getAll]
      */
     suspend fun getAll(
         keys: Iterable<K>,
-        mappingFunction: suspend (Iterable<K>) -> Map<K, V>,
-    ): Map<K, V>
+        mappingFunction: suspend (Iterable<K>) -> Map<K, V & Any>,
+    ): Map<K, V & Any>
 
     /**
      * The coroutines implementation of [Cache.put]
      */
     fun put(
         key: K,
-        value: V,
+        value: V & Any,
     )
 
     /**
      * The coroutines implementation of [Cache.putAll]
      */
-    fun putAll(map: Map<K, V>)
+    fun putAll(map: Map<K, V & Any>)
 
     /**
      * Returns the [Cache]

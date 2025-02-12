@@ -32,7 +32,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 
 class CoroutineCacheImplTest {
-    private val target = Caffeine.newBuilder().buildCoroutine<String, String>()
+    private val target = Caffeine.newBuilder().buildCoroutine<String, String?>()
     private val invokedKeys = Collections.synchronizedList(mutableListOf<String>())
     private val mappingFunction: suspend (String) -> String = {
         delay(2000)
