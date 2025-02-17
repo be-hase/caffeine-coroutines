@@ -39,4 +39,4 @@ jobs:
           distribution: temurin
           java-version: 11
       - name: Report gradle dependencies diff
-        uses: be-hase/gradle-dependency-diff-action@v1
+        uses: be-hase/gradle-dependency-diff-action@v2
