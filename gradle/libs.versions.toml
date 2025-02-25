@@ -12,7 +12,7 @@ kotlin-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jd
 kotlin-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
-logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.16" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.17" }
 mockk-core = { module = "io.mockk:mockk", version = "1.13.16" }
 
 # gradle plugins for build-logic
