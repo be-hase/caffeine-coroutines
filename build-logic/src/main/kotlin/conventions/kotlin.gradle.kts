@@ -30,6 +30,7 @@ val libs = the<LibrariesForLibs>()
 
 dependencies {
     testImplementation(platform(libs.junit.bom))
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(libs.assertk)
     testImplementation(libs.mockk.core)
