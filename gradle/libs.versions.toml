@@ -6,7 +6,7 @@ ktlint = "1.5.0"
 [libraries]
 assertk = { module = "com.willowtreeapps.assertk:assertk-jvm", version = "0.28.1" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine", version = "3.2.0" }
-junit-bom = { module = "org.junit:junit-bom", version = "5.11.4" }
+junit-bom = { module = "org.junit:junit-bom", version = "5.12.0" }
 kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-jdk8 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8", version.ref = "kotlin-coroutines" }
 kotlin-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-slf4j", version.ref = "kotlin-coroutines" }
