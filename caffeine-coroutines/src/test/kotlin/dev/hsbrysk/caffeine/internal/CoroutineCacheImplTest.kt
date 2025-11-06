@@ -6,8 +6,10 @@ import assertk.assertions.containsAtLeast
 import assertk.assertions.containsExactly
 import assertk.assertions.isEqualTo
 import assertk.assertions.isInstanceOf
+import assertk.assertions.isNotNull
 import assertk.assertions.isNull
 import assertk.assertions.isNullOrEmpty
+import assertk.assertions.message
 import com.github.benmanes.caffeine.cache.AsyncCache
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
@@ -19,6 +21,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -171,6 +174,45 @@ class CoroutineCacheImplTest {
             runBlocking {
                 assertThat(listOf(result1, result2).awaitAll()).containsExactly("value-1", "value-1")
                 assertThat(invokedKeys).containsExactly("1")
+            }
+        }
+
+        @Test
+        fun `once executed when error`() {
+            // Even if executed almost simultaneously, it should only run once when error.
+
+            val loader: suspend (String) -> String = {
+                delay(2000)
+                error(currentCoroutineContext()[CoroutineName]!!.name)
+            }
+
+            val result1 = GlobalScope.async(CoroutineName("exec-1")) {
+                target.get("key", loader)
+            }
+            val result2 = GlobalScope.async(CoroutineName("exec-2")) {
+                delay(1000)
+                target.get("key", loader)
+            }
+
+            runBlocking {
+                assertFailure {
+                    result1.await()
+                }.given {
+                    assertThat(it)
+                        .isInstanceOf(IllegalStateException::class.java)
+                        .message().isEqualTo("exec-1")
+                }
+                assertFailure {
+                    result2.await()
+                }.given {
+                    assertThat(it)
+                        .isInstanceOf(CancellationException::class.java)
+                        .message().isNull()
+                    assertThat(it.cause).isNotNull()
+                        .isInstanceOf(CancellationException::class.java)
+                        .message().isNull()
+                    assertThat(it.cause!!.cause).isNull()
+                }
             }
         }
 
