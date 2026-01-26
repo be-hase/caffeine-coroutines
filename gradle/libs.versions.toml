@@ -13,7 +13,7 @@ kotlin-coroutines-slf4j = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-s
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlin-coroutines" }
 ktlint-rule-engine-core = { module = "com.pinterest.ktlint:ktlint-rule-engine-core", version.ref = "ktlint" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version = "1.5.26" }
-mockk-core = { module = "io.mockk:mockk", version = "1.14.7" }
+mockk-core = { module = "io.mockk:mockk", version = "1.14.9" }
 
 # gradle plugins for build-logic
 gradle-plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version = "1.23.8" }
