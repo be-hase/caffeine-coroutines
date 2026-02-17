@@ -24,7 +24,7 @@ mavenPublishing {
         project.version.toString(),
     )
     configure(
-        KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGenerateHtml"), sourcesJar = SourcesJar.Sources()),
+        KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGeneratePublicationHtml"), sourcesJar = SourcesJar.Sources()),
     )
     afterEvaluate {
         pom {
