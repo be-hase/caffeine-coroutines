@@ -2,6 +2,7 @@ package conventions
 
 import com.vanniktech.maven.publish.JavadocJar
 import com.vanniktech.maven.publish.KotlinJvm
+import com.vanniktech.maven.publish.SourcesJar
 
 plugins {
     id("com.vanniktech.maven.publish")
@@ -23,7 +24,7 @@ mavenPublishing {
         project.version.toString(),
     )
     configure(
-        KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaHtml"), sourcesJar = true),
+        KotlinJvm(javadocJar = JavadocJar.Dokka("dokkaGenerateHtml"), sourcesJar = SourcesJar.Sources()),
     )
     afterEvaluate {
         pom {
